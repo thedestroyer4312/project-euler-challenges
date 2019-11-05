@@ -3,7 +3,7 @@
  *Euler Problem #1
  *Finds the sum of all multiples of 3 and 5 under a certain number n.
  */
-public class multiples3And5{
+public class Multiples3And5{
   public static void main(String[] args){
     int output = multiples3Or5(1000);
     System.out.println(output);

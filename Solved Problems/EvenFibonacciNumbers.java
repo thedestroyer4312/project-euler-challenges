@@ -6,7 +6,7 @@
 
 import java.util.*;
 
-public class evenFibonacciNumbers{
+public class EvenFibonacciNumbers{
  
  public static void main(String[] args){
     long sum = evenFibonacciSum(4000000l);

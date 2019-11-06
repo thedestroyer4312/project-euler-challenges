@@ -2,6 +2,7 @@
  * ***SOLVED***
  *Euler Problem #3
  *Finds the largest prime factor of 600851475143
+ *@author Trevor Tsai
  */
 public class LargestPrimeFactor{
   

@@ -2,6 +2,7 @@
  * ***WORK IN PROGRESS***
  *Euler Problem #4
  *Finds the largest palindrome that is the product of three digit numbers
+ *@author Trevor Tsai
  */
 public class PalindromeProduct{
 

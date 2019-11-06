@@ -2,6 +2,7 @@
  * ***SOLVED***
  *Euler Problem #2
  *Find the sum of the even-valued Fibonacci terms that do not exceed four million.
+ *@author Trevor Tsai
  */
 
 import java.util.*;

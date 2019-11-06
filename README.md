@@ -6,4 +6,4 @@ I am attempting the solutions first in Java, and later in C++ as I develop my kn
 
 Contributors:
 thedestroyer4312
-2jineric
+twojineric

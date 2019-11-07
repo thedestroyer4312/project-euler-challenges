@@ -1,5 +1,5 @@
 /**
- * ***WORK IN PROGRESS***
+ * ***SOLVED***
  *Euler Problem #4
  *Finds the largest palindrome that is the product of three digit numbers
  *@author Trevor Tsai
@@ -17,11 +17,12 @@ public class PalindromeProduct{
    *@return The largest palindrome product of two n-digit numbers
    */
   public static long largestPalindromeProduct(int n){
-    int max = (int) Math.pow(10,n);
+    int min = (int) Math.pow(10, n - 1);
+    int max = (int) Math.pow(10, n);
     long largest = -1;
-    for(int i = 0; i < max; i++){
-      for(int j = 0; j < max; j++){
-        if(isPalindrome(i * j))
+    for(int i = max - 1; i >= min; i--){
+      for(int j = max - 1; j >= min; j--){
+        if(isPalindrome(i * j) && (i * j) > largest)
 	  largest = i * j;
       }
     }
@@ -34,15 +35,21 @@ public class PalindromeProduct{
    *@return true if the number is a palindrome, false if it is not
    */
   public static boolean isPalindrome(long n){
-    if(n < 10) //that is, n is 1 digit
+    String nString = String.valueOf(n);
+    return isPalindrome(nString);
+  }
+
+  /**
+   *
+   */
+  public static boolean isPalindrome(String input){
+    if(input.length() == 1 || input.length() == 0)
       return true;
-    if(n < 100){ //that is, n is 2 digits
-      return n / 10 == n % 10;
-    }else{
-      if(firstDigit(n) != n % 10)
+    else{
+      if(input.charAt(0) != input.charAt(input.length() - 1))
         return false;
       else
-        return isPalindrome(n / 10 - firstDigit(n / 10) * ((int) (Math.pow(10, numDigits(n / 10) - 1))));
+        return isPalindrome(input.substring(1, input.length() - 1));
     }
   }
 
@@ -52,10 +59,12 @@ public class PalindromeProduct{
    *@return First digit of number n
    */
   public static byte firstDigit(long n){
-    if(n < 10)
-     return (byte) n;
-    else
-      return firstDigit(n / 10);
+    byte output = -1;
+    while(n >= 10){
+      n /= 10;
+    }
+    output = (byte) n;
+    return output;
   }
 
   /**
@@ -65,7 +74,8 @@ public class PalindromeProduct{
    */
   public static int numDigits(long n){
     int numDigits = 1;
-    for(int i = 10; (n / i) < 10; i *= 10){
+    while(n >= 10){
+      n /= 10;
       numDigits++;
     }
     return numDigits;

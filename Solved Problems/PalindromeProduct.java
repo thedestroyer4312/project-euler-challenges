@@ -52,33 +52,5 @@ public class PalindromeProduct{
         return isPalindrome(input.substring(1, input.length() - 1));
     }
   }
-
-  /**
-   *Finds the first digit of a number n
-   *@param n A number to be evaluated
-   *@return First digit of number n
-   */
-  public static byte firstDigit(long n){
-    byte output = -1;
-    while(n >= 10){
-      n /= 10;
-    }
-    output = (byte) n;
-    return output;
-  }
-
-  /**
-   *Finds the first digit of a number n
-   *@param n A number to be evaluated
-   *@return first digit of the number n
-   */
-  public static int numDigits(long n){
-    int numDigits = 1;
-    while(n >= 10){
-      n /= 10;
-      numDigits++;
-    }
-    return numDigits;
-  }
 }
 

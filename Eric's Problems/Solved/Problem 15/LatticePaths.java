@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package latticepaths;
+package projecteuler;
 
 /**
  *
- * @author twojineric
+ * @author 2jine
  */
 public class LatticePaths {
-
       /**
      * PROJECT EULER 15
      * @param right - length of grid

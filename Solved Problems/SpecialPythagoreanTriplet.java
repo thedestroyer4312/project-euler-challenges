@@ -1,5 +1,5 @@
 /**
- * ***WORK IN PROGRESS***
+ * ***SOLVED***
  *Euler Problem #9
  *Attempts to find the special Pythagorean triple (a^2 + b^2 = c^2)
  *where a + b + c = 1000
@@ -9,7 +9,7 @@ import java.util.*;
 public class SpecialPythagoreanTriplet{
 
   public static void main(String[] args){
-    System.out.println(specPTriplet());
+    System.out.println(Arrays.toString(specPTriplet()));
   }
 
  /**

@@ -11,7 +11,7 @@ public class Prime10001{
   }
 
  /**
-  *Finds the nth prime using the Sieve of Eratosthenes
+  *Finds the nth prime using a brute force method
   *@param n The input number for the prime
   *@return The nth prime number
   */

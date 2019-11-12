@@ -7,7 +7,7 @@ package projecteuler;
 
 /**
  *
- * @author 2jine
+ * @author twojineric
  */
 public class LatticePaths {
       /**
@@ -24,12 +24,12 @@ public class LatticePaths {
                 return 1;
         return latticePaths(right-1, down) + latticePaths(right, down-1);
     }
-    
-     
+
+
     public static void main(String[] args) {
         // VERY LONG RUNTIME!
         System.out.println(latticePaths(20,20));
-        
+
     }
-    
+
 }

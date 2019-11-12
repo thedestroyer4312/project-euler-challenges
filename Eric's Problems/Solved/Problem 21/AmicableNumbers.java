@@ -10,8 +10,7 @@ package projecteuler;
  * @author twojineric
  */
 public class AmicableNumbers {
-    
-    
+
      /**
      * PROJECT EULER 21
      * @return Finds the sum of all amicable numbers from 1 to n

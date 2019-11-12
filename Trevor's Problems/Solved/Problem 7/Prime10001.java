@@ -2,6 +2,7 @@
  * ***SOLVED***
  *Euler Problem #6
  *Finds the 10001st prime
+ *@author Trevor Tsai
  */
 public class Prime10001{
   

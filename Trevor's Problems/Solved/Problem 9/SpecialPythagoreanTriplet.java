@@ -3,6 +3,7 @@
  *Euler Problem #9
  *Attempts to find the special Pythagorean triple (a^2 + b^2 = c^2)
  *where a + b + c = 1000
+ *@author Trevor Tsai
  */
 import java.util.*;
 

@@ -2,6 +2,7 @@
  * ***WORK IN PROGRESS***
  *Euler Problem #11
  *Attempts to find the largest product of four adjacent numbers in a given 20x20 grid
+ *@author Trevor Tsai
  */
 public class LargestGridProduct{
 

@@ -2,6 +2,7 @@
  * ***SOLVED***
  *Euler Problem #5
  *Finds the smallest positive number that is divisible by all of the numbers from 1 - 20
+ *@author Trevor Tsai
  */
 import java.lang.*;
 

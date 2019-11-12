@@ -2,6 +2,7 @@
  * ***SOLVED***
  *Euler Problem #7
  *Tries to find the largest product of 13 consecutive digits in a 100 digit number
+ *@author Trevor Tsai
  */
 import java.lang.*;
  

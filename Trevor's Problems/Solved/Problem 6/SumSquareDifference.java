@@ -2,6 +2,7 @@
  * ***SOLVED***
  *Euler Problem #6
  *Finds the difference between the sum of squares and the square of the sums of the first 100 natural numbers
+ *@author Trevor Tsai
  */
 public class SumSquareDifference{
 

@@ -8,19 +8,19 @@
 import java.util.*;
 
 class BigNum{
-	
-	public static void main(String[] args){
-		System.out.println("Adding 999999 + 999999 should be 1999998");
-		BigNum num1 = new BigNum("999999");
-		BigNum num2 = new BigNum("999999");
-		System.out.println(num1.add(num2));
 
-		System.out.println("Adding 500 + 500");
-		BigNum num3 = new BigNum(500);
-		BigNum num4 = new BigNum(500);
-		System.out.println("num3 = " + num3 + ", num4 = " + num4);
-		System.out.println("num3 + num4 = " + num3.add(num4));
-	}
+    public static void main(String[] args){
+        System.out.println("Adding 999999 + 999999 should be 1999998");
+        BigNum num1 = new BigNum("999999");
+        BigNum num2 = new BigNum("999999");
+        System.out.println(num1.add(num2));
+
+        System.out.println("Adding 500 + 500");
+        BigNum num3 = new BigNum(500);
+        BigNum num4 = new BigNum(500);
+        System.out.println("num3 = " + num3 + ", num4 = " + num4);
+        System.out.println("num3 + num4 = " + num3.add(num4));
+    }
 
     //instance variables
     byte[] digits;
@@ -71,76 +71,66 @@ class BigNum{
     }
 
     //Instance methods
-
     /**
      * Adds two BigNum objects like numbers and returns an output
      * @param other The other BigNum
      * @return a new BigNum that is the sum of these two BigNums
      */
     public BigNum add(BigNum other){
-        //If they are not the same length, we have to go to the shortest length
-        int length = (this.digits.length > other.digits.length)
-                ? other.digits.length : this.digits.length;
-        //temporary List for output array
-        List<Byte> tempDigits = new LinkedList<Byte>();
-        byte remainder = 0;
-        boolean hasRemainder = false;
-        for(int i = 0; i <= length; i++){
-            byte digSum = 0;
-            if(i < length){
-                digSum = (byte) (this.digits[this.digits.length - 1 - i]
-                        + other.digits[other.digits.length - 1 - i]);
-            }
-            if(hasRemainder){
-                digSum += remainder;
-                hasRemainder = false;
-                remainder = 0;
-            }
-            if(digSum > 9){
-                remainder = (byte) (digSum / 10);
-                digSum %= 10;
-                hasRemainder = true;
-            }
-            tempDigits.add(0, digSum);
-        }
-
-        /* Now that the computation is done, we fill an output byte array
-         * and return a corresponding BigNum formed from it
+        //finding which BigNum is longer (has more digits)
+        boolean thisLongest = this.digits.length > other.digits.length;
+        byte[] longer = (thisLongest) ? this.digits : other.digits;
+        byte[] shorter = (thisLongest) ? other.digits : this.digits;
+        
+        /* if you add two numbers, you can at most increase the digits by 1
+         * keeping that in mind, we make a copy of the longest digits array
          */
-        byte[] output = new byte[tempDigits.size()];
-        for(int i = 0; i < tempDigits.size(); i++){
-            output[i] = tempDigits.get(i);
+        byte[] newDigits = new byte[longer.length + 1];
+        newDigits[0] = 0;
+        for(int i = 0; i < longer.length; i++){
+            newDigits[newDigits.length - 1 - i] = longer[longer.length - 1 - i];
         }
-
-	// Trim the leading 0s
-	output = trimZeroes(output);
-	
-        return new BigNum(output);
+        
+        //now we add the digits together
+        for(int i = 0; i < shorter.length; i++){
+            newDigits[newDigits.length - 1 - i] += shorter[shorter.length - 1 - i];
+        }
+        
+        //calculating remainders and adjusting numbers
+        for(int i = newDigits.length - 1; i > 0; i--){
+            byte remainder = (byte) (newDigits[i] / 10);
+            newDigits[i] %= 10;
+            newDigits[i - 1] += remainder;
+        }
+        
+        //trimming a zero if there is one at the beginning
+        newDigits = trimZeroes(newDigits);
+        return new BigNum(newDigits);
     }
 
     /**
-     * Trims the leading 0s off the array input
-     * Intended to be used only by this class
+     * Trims the leading 0s off the array input Intended to be used only by this
+     * class
      * @param input the input array which may or may not need trimming
      * @return a new array with leading 0s removed
      */
     private byte[] trimZeroes(byte[] input){
         byte[] output;
-	int counter = 0; //the number of leading 0s
-	 
-	//parsing through the array to count the leading 0s
-	for(int i = 0; i < input.length; i++){
-	    counter = i;
-	    if(input[i] != (byte) 0){
-	        break;
-           }
-	}
+        int counter = 0; //the number of leading 0s
 
-	output = new byte[input.length - counter];
-	for(int i = counter, l = 0; i < input.length; i++, l++){
+        //parsing through the array to count the leading 0s
+        for(int i = 0; i < input.length; i++){
+            counter = i;
+            if(input[i] != (byte) 0){
+                break;
+            }
+        }
+
+        output = new byte[input.length - counter];
+        for(int i = counter, l = 0; i < input.length; i++, l++){
             output[l] = input[i];
-	}
-	return output;
+        }
+        return output;
     }
 
     /**
@@ -170,8 +160,7 @@ class BigNum{
 
     //Overriding
     /**
-     * Overrides the toString method
-     * Prints the digits consecutively, like a
+     * Overrides the toString method Prints the digits consecutively, like a
      * normal number
      * @return A String representation of the digits
      */

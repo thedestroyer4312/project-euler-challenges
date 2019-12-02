@@ -1,13 +1,13 @@
-
+package HelperClasses;
 /**
  * Euler Problem #13 - Helper class
  * An immutable helper class that represents large natural numbers using arrays
  * The only function is addition and summing the digits
  * @author Trevor Tsai
  */
-import java.util.*;
+import java.util.Arrays;
 
-class BigNum{
+public class BigNum{
 
     public static void main(String[] args){
         System.out.println("Adding 999999 + 999999 should be 1999998");
@@ -20,6 +20,18 @@ class BigNum{
         BigNum num4 = new BigNum(500);
         System.out.println("num3 = " + num3 + ", num4 = " + num4);
         System.out.println("num3 + num4 = " + num3.add(num4));
+        
+        System.out.println("Adding 333 + 669 = 1002");
+        BigNum num5 = new BigNum(333);
+        BigNum num6 = new BigNum(669);
+        System.out.println("num5 = " + num5 + ", num6 = " + num6);
+        System.out.println("num5 + num6 = " + num5.add(num6));
+        
+        System.out.println("Adding 9999 + 26 = 10025");
+        BigNum num7 = new BigNum(9999);
+        BigNum num8 = new BigNum(26);
+        System.out.println("num7 = " + num7 + ", num8 = " + num8);
+        System.out.println("num7 + num8 = " + num7.add(num8));
     }
 
     //instance variables
@@ -47,6 +59,7 @@ class BigNum{
              */
             digits[i] = (byte) (input.charAt(i) - 48);
         }
+        digits = trimZeroes(digits);
     }
 
     /**

@@ -1,6 +1,6 @@
-
+import HelperClasses.BigNum;
 /**
- * ***IN PROGRESS***
+ * ***SOLVED***
  * Euler Problem #13
  * Find the sum of a given hundred 50-digit numbers
  * @author Trevor Tsai
@@ -117,22 +117,29 @@ public class LargeSum{
          * such astronomical sizes. That will be implemented in a separate file.
          */
 
-	//Testing the string cutting
-	/*
+        //Testing the string cutting
+        /*
 	System.out.println("[");
 	for(int i = 0; i < stringList.length; i++){
 	    System.out.println(stringList[i]);
 	}
 	System.out.println("]");
-	*/
-
+         */
         BigNum[] nums = new BigNum[stringList.length];
         for(int i = 0; i < nums.length; i++){
             nums[i] = new BigNum(stringList[i]);
         }
-
+        
+        //Testing the BigNum array's accuracy
+        /*
+        System.out.println("[");
+        for(BigNum b : nums)
+            System.out.println(b);
+        System.out.println("]");
+        */
+        
         //Now we add the BigNum objects in the array
-	BigNum tester = nums[0].add(nums[1]);
+	BigNum tester = nums[0];
 	for(int i = 1; i < nums.length; i++){
 	    tester = tester.add(nums[i]);
 	}
@@ -145,7 +152,7 @@ public class LargeSum{
      * @param input The input String we are cutting up
      * @parma n How long the String should be
      * @return A String array containing each n-long segment of the String
-     */
+         */
     public static String[] parseStrings(String input, int n){
         String[] output = new String[input.length() / n];
         for(int i = 0, counter = 0; i <= input.length() - n; i += n, counter++){

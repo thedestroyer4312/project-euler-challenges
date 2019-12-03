@@ -1,4 +1,4 @@
-import HelperClasses.BigNum;
+
 /**
  * ***SOLVED***
  * Euler Problem #13

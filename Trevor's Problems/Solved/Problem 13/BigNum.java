@@ -1,41 +1,18 @@
 
 /**
  * Helper class
+ * @version 12/5/19
  * Originally implemented to assist with Euler Problem #13, this class is being
  * continually expanded to assist with other problems as well
  * An immutable helper class that represents large natural numbers using arrays
- * The functions include addition and summing the digits
- * Multiplication, exponentation, other functions are currently in progress
+ * The functions include addition, multiplication, and exponentiation
+ * Secondary functions include summing of digits
+ * Working on negative numbers, subtraction, division, to come
  * @author Trevor Tsai
  */
 import java.util.Arrays;
 
 public class BigNum implements Comparable<BigNum>{
-
-    public static void main(String[] args){
-        System.out.println("Adding 999999 + 999999 should be 1999998");
-        BigNum num1 = new BigNum("999999");
-        BigNum num2 = new BigNum("999999");
-        System.out.println(num1.add(num2));
-
-        System.out.println("Adding 500 + 500");
-        BigNum num3 = new BigNum(500);
-        BigNum num4 = new BigNum(500);
-        System.out.println("num3 = " + num3 + ", num4 = " + num4);
-        System.out.println("num3 + num4 = " + num3.add(num4));
-
-        System.out.println("Adding 333 + 669 = 1002");
-        BigNum num5 = new BigNum(333);
-        BigNum num6 = new BigNum(669);
-        System.out.println("num5 = " + num5 + ", num6 = " + num6);
-        System.out.println("num5 + num6 = " + num5.add(num6));
-
-        System.out.println("Adding 9999 + 26 = 10025");
-        BigNum num7 = new BigNum(9999);
-        BigNum num8 = new BigNum(26);
-        System.out.println("num7 = " + num7 + ", num8 = " + num8);
-        System.out.println("num7 + num8 = " + num7.add(num8));
-    }
 
     //instance variables
     byte[] digits;
@@ -76,13 +53,10 @@ public class BigNum implements Comparable<BigNum>{
 
     /**
      * Clones the given BigNum object with an identical backing array
-     * @param input Another BigNum object
+     * @param input A copy of the given BigNum object
      */
     public BigNum(BigNum input){
-        digits = new byte[input.digits.length];
-        for(int i = 0; i < digits.length; i++){
-            digits[i] = input.digits[i];
-        }
+        this(input.digits);
     }
 
     /**
@@ -124,15 +98,28 @@ public class BigNum implements Comparable<BigNum>{
         }
 
         //calculating remainders and adjusting numbers
-        for(int i = newDigits.length - 1; i > 0; i--){
-            byte remainder = (byte) (newDigits[i] / 10);
-            newDigits[i] %= 10;
-            newDigits[i - 1] += remainder;
-        }
+        newDigits = parseRemainders(newDigits);
 
         //trimming a zero if there is one at the beginning
         newDigits = trimZeroes(newDigits);
         return new BigNum(newDigits);
+    }
+
+    /**
+     * Adds a BigNum with a natural number by converting the number to a BigNum
+     * After converting the natural number, calls the other add() method
+     * @param input An input natural number. If < 0, throws
+     * IllegalArgumentException @return A new BigNum that is the su m of these
+     * two numbers
+     */
+    public BigNum add(long input){
+        if(input < 0){
+            throw new IllegalArgumentException("Must be a natural number "
+                    + "(greater than 0)");
+        }
+
+        BigNum other = new BigNum(input);
+        return this.add(other);
     }
 
     /**
@@ -141,49 +128,87 @@ public class BigNum implements Comparable<BigNum>{
      * @return A new BigNum that is the product of the first two
      */
     public BigNum multiply(BigNum other){
-        //this will be easier if we know which one is the longest and shortest
-        boolean thisLongest = this.digits.length > other.digits.length;
-        BigNum longNum = thisLongest ? this : other;
-        BigNum shortNum = thisLongest ? other : this;
-
         //doing a check to see if either number is zero
         if(isZero() || other.isZero()){
             return new BigNum(0);
         }
 
+        //this will be easier if we know which one is the longest and shortest
+        boolean thisLongest = this.digits.length > other.digits.length;
+        BigNum longNum = thisLongest ? this : other;
+        BigNum shortNum = thisLongest ? other : this;
+
         //now to multiply, we go digit by digit, using the other method
+        BigNum output = new BigNum(0);
+        for(int i = shortNum.digits.length - 1, l = 0; i >= 0; i--, l++){
+            int multiplier = (int) (Math.pow(10, l));
+            output = output.add(longNum.multiply(shortNum.digits[i] * multiplier));
+        }
+        return output;
     }
 
     /**
      * Multiplies this BigNum with a natural number and returns a new product
-     * @param num A long that represents a natural number ( >= 0);
-     * @return
+     * @param num A long that represents a natural number ( >= 0)
+     * @return A new BigNum that is the product of these two numbers
      */
     public BigNum multiply(long num){
         if(num < 0){
             throw new IllegalArgumentException("Must be a natural number "
                     + "(greater than 0)");
         }
-        if(num == 0){
+        if(num == 0 || isZero()){
             return new BigNum(0);
         }
 
         BigNum output = new BigNum(0);
+        //counter keeps track of the tens place in multiplying
         int counter = 0;
         while(num > 0){
+            //creating a copy of digits with a space at the front and back
             byte[] temp = new byte[digits.length + 1 + counter];
-            //creating a copy of digits with a space at the front
-            for(int i = 0; i < digits.length; i++){
-                temp[i + 1] = digits[i];
-            }
             byte digit = (byte) (num % 10);
-            int count = digits.length - 1;
-            while(count >= 0){
-
-                count--;
+            //we also multiply by the last digit
+            int i, l;
+            for(i = temp.length - 1 - counter, l = digits.length - 1; l >= 0; i--, l--){
+                temp[i] = (byte) (digits[l] * digit);
             }
+            //now we parse the remainders
+            temp = parseRemainders(temp);
+            //create a new BigNum object using this and add that to the output
+            output = output.add(new BigNum(temp));
+
+            num /= 10;
+            counter++;
         }
 
+        return output;
+    }
+
+    /**
+     * Returns a BigNum raised to an input long power The input will not accept
+     * BigNums because that would be extremely large and hopefully not required,
+     * as it depends on a for loop Also will not accept negative numbers because
+     * that is outside the current scope of the implementation of this class
+     * @param exp The exponent to raise this BigNum to
+     * @return A BigNum that is this^exp
+     */
+    public BigNum power(long exp){
+        if(exp < 0){
+            throw new IllegalArgumentException("Exponent must be 0 or greater");
+        }
+
+        BigNum output;
+        if(exp == 0){
+            output = new BigNum(1);
+        }else if(exp == 1){
+            output = new BigNum(this);
+        }else{
+            output = new BigNum(1);
+            for(long i = 0; i < exp; i++){
+                output = output.multiply(this);
+            }
+        }
         return output;
     }
 
@@ -210,26 +235,51 @@ public class BigNum implements Comparable<BigNum>{
     private byte[] trimZeroes(byte[] input){
         byte[] output;
         int counter = 0; //the number of leading 0s
+        boolean allZeroes = true;
 
         //parsing through the array to count the leading 0s
         for(int i = 0; i < input.length; i++){
             counter = i;
             if(input[i] != (byte) 0){
+                allZeroes = false;
                 break;
             }
         }
 
-        //what if everything's a 0 - that is, the number is 0?
-        if(counter == digits.length){
+        //what if everything's a 0
+        if(allZeroes){
             byte[] temp = {0};
             return temp;
+        }else{
+            //if it's not, carry on as normal
+            output = new byte[input.length - counter];
+            for(int i = counter, l = 0; i < input.length; i++, l++){
+                output[l] = input[i];
+            }
+            return output;
+        }
+    }
+
+    /**
+     * Given a byte[] with digits > 10, breaks up each and adds the remainders
+     * to the next, like with addition or multiplication
+     * @param input The input array that requires remainder parsing
+     * @return A new array that has been parsed for remainders
+     */
+    private byte[] parseRemainders(byte[] input){
+        byte[] output = new byte[input.length + 1];
+        //copying over digits with a 0 at the beginning for space
+        for(int i = 0; i < input.length; i++){
+            output[i + 1] = input[i];
         }
 
-        //if it's not, carry on as normal
-        output = new byte[input.length - counter];
-        for(int i = counter, l = 0; i < input.length; i++, l++){
-            output[l] = input[i];
+        //now we remove remainders and add them to the slot previous (next digit)
+        for(int i = output.length - 1; i > 0; i--){
+            byte remainder = (byte) (output[i] / 10);
+            output[i] %= 10;
+            output[i - 1] += remainder;
         }
+        output = trimZeroes(output);
         return output;
     }
 
@@ -284,7 +334,9 @@ public class BigNum implements Comparable<BigNum>{
     }
 
     /**
-     *
+     * Compares the value of two BigNum objects
+     * @param obj The other BigNum object
+     * @return 1 if this object is greater than the other, -1 if not, 0 if equal
      */
     @Override
     public int compareTo(BigNum obj){
@@ -307,14 +359,18 @@ public class BigNum implements Comparable<BigNum>{
                 if(this.equals(obj)){
                     output = 0;
                 }else{
-                    //if they're not equal, we trim and use recursion
-                    byte[] newDig1 = new byte[digits.length];
-                    byte[] newDig2 = new byte[obj.digits.length];
-                    for(int i = 0; i < digits.length - 1; i++){
-                        newDig1[i] = this.digits[i + 1];
-                        newDig2[i] = obj.digits[i + 1];
+                    //if they're not equal, we go down the line
+                    output = 0;
+                    for(int i = digits.length - 1; i >= 0; i--){
+                        if(this.digits[i] > obj.digits[i]){
+                            output = 1;
+                            break;
+                        }
+                        if(obj.digits[i] > this.digits[i]){
+                            output = -1;
+                            break;
+                        }
                     }
-                    output = (new BigNum(newDig1)).compareTo(new BigNum(newDig2));
                 }
             }
         }

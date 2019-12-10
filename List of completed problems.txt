@@ -13,16 +13,16 @@ Problem 12 - Trevor Tsai
 Problem 13 - Eric Jin, Trevor Tsai
 Problem 14 - Eric Jin, Trevor Tsai
 Problem 15 - Eric Jin
-Problem 16 -
+Problem 16 - Trevor Tsai
 Problem 17 - Eric Jin
 Problem 18 -
 Problem 19 -
-Problem 20 -
+Problem 20 - Trevor Tsai
 Problem 21 - Eric Jin
 Problem 22 -
 Problem 23 -
 Problem 24 -
-Problem 25 - Eric Jin
+Problem 25 - Eric Jin, Trevor Tsai
 Problem 26 -
 Problem 27 -
 Problem 28 -
@@ -45,7 +45,7 @@ Problem 44 -
 Problem 45 -
 Problem 46 -
 Problem 47 -
-Problem 48 -
+Problem 48 - Trevor Tsai
 Problem 49 -
 Problem 50 -
 Problem 51 -
@@ -73,3 +73,27 @@ Problem 72 -
 Problem 73 -
 Problem 74 -
 Problem 75 -
+Problem 76 -
+Problem 77 -
+Problem 78 -
+Problem 79 -
+Problem 80 -
+Problem 81 -
+Problem 82 -
+Problem 83 -
+Problem 84 -
+Problem 85 -
+Problem 86 -
+Problem 87 -
+Problem 88 -
+Problem 89 -
+Problem 90 -
+Problem 91 -
+Problem 92 -
+Problem 93 -
+Problem 94 -
+Problem 95 -
+Problem 96 -
+Problem 97 -
+Problem 98 -
+Problem 99 -

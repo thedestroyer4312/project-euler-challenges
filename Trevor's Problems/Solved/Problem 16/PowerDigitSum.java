@@ -1,6 +1,6 @@
 
 /**
- * ***WORK IN PROGRESS***
+ * ***SOLVED***
  * Euler Problem #16
  * Find the sum of the digits of 2^1000
  * @author Trevor Tsai
@@ -14,19 +14,22 @@ public class PowerDigitSum{
     }
     
     /**
-     * 
-     * @param base
-     * @param exp
-     * @return 
+     * Returns a String representation of a base raised to a power using the
+     * BigNum class
+     * @param base The base number
+     * @param exp The exponent
+     * @return A String that represents the number
      */
     public static String power(int base, int exp){
-        String output;
+        BigNum temp = new BigNum(base);
+        temp = temp.power(exp);
+        return temp.toString();
     }
     
     /**
-     * 
-     * @param input
-     * @return 
+     * Sums the digits of a String that represents a number
+     * @param input An input String representing a number
+     * @return The sum of the digits of the number
      */
     public static int digitSum(String input){
         int sum = 0;

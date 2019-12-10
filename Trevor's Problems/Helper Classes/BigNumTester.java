@@ -42,7 +42,7 @@ public class BigNumTester{
         System.out.println("Second num is " + zeroTest2);
         System.out.println("Is the second one zero? " + zeroTest2.isZero());
         System.out.println();
-        
+
         System.out.println("---Testing BigNum comparison---");
         BigNum numTest1 = new BigNum(123456789);
         BigNum numTest2 = new BigNum(987654321);
@@ -59,7 +59,6 @@ public class BigNumTester{
         System.out.println("Comparison result: " + numTest3.compareTo(numTest4));
         System.out.println("Equality result: " + numTest3.equals(numTest4));
         System.out.println();
-        
 
         System.out.println("***TESTING MULTIPLICATION***");
         System.out.println("---Multiplying BigNum objects together---");
@@ -88,7 +87,7 @@ public class BigNumTester{
         System.out.println("num15 = " + num15);
         System.out.println("num15 * 789 = " + num15.multiply(789));
         System.out.println();
-        
+
         System.out.println("***TESTING EXPONENTIATION***");
         System.out.println("2^5 = 32");
         BigNum num16 = new BigNum(2);
@@ -102,5 +101,50 @@ public class BigNumTester{
         BigNum num20 = new BigNum(50);
         System.out.println("num20 = " + num20);
         System.out.println("num20 ^ 10 = " + num20.power(10));
+        System.out.println();
+
+        System.out.println("***TESTING SCIENTIFIC NOTATION***");
+        System.out.println("50 ^ 10 = 97656250000000000");
+        BigNum num21 = new BigNum(50);
+        num21 = num21.power(10);
+        System.out.println("num21 is " + num21);
+        System.out.println("Scientific notation (15 digit, with and without zeroes)"
+                + " should be 9.765625E16 or 9.75625000000000E16");
+        System.out.println(num21.toScientific() + ", " + num21.toScientific(15, true));
+        System.out.println("Let's try printing 10 in scientific notation with "
+                + "and without trimming zeroes");
+        System.out.println("It should be 1.0E1, 1E1");
+        BigNum num22 = new BigNum(10);
+        System.out.println(num22.toScientific(15, true) + ", " + num22.toScientific());
+	System.out.println();
+
+	System.out.println("***TESTING DIGIT GETTERS***");
+	System.out.println("We have a BigNum 1234567890");
+	BigNum num23 = new BigNum("1234567890");
+	System.out.println("num23 = " + num23);
+	System.out.println("Let's request the first 3 digits. It should be 123");
+	byte[] first3 = num23.getFirstDigits(3);
+	printArr(first3);
+	System.out.println("\nLet's request the last 3 digits. It should be 890");
+	byte[] last3 = num23.getLastDigits(3);
+	printArr(last3);
+    }
+
+    /**
+     * Prints a byte[] sequentially
+     */
+    public static void printArr(byte[] input){
+        for(byte i : input){
+	    System.out.print(i);
+	}
+    }
+
+    /**
+     * Prints any type of Object array sequentially
+     */
+    public static void printArr(Object[] input){
+	for(Object obj : input){
+	    System.out.print(obj);
+	}
     }
 }

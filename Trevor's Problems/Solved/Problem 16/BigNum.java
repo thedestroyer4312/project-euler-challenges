@@ -4,7 +4,8 @@
  * @version 12/5/19
  * Originally implemented to assist with Euler Problem #13, this class is being
  * continually expanded to assist with other problems as well
- * An immutable helper class that represents large natural numbers using arrays
+ * An immutable helper class that represents large natural numbers using
+ * arrays
  * The functions include addition, multiplication, and exponentiation
  * Secondary functions include summing of digits
  * Working on negative numbers, subtraction, division, to come
@@ -15,7 +16,7 @@ import java.util.Arrays;
 public class BigNum implements Comparable<BigNum>{
 
     //instance variables
-    byte[] digits;
+    private byte[] digits;
 
     //Constructors
     /**
@@ -69,6 +70,23 @@ public class BigNum implements Comparable<BigNum>{
         for(int i = 0; i < input.length; i++){
             digits[i] = input[i];
         }
+    }
+
+    //Static methods
+    /**
+     * Returns a BigNum representing the factorial of an input number
+     * @param num A long input
+     * @return num! in the form of a BigNum
+     */
+    public static BigNum factorial(long num){
+        if(num < 0){
+            throw new IllegalArgumentException("Cannot be negative");
+        }
+        BigNum output = new BigNum(1);
+        for(long i = 1; i <= num; i++){
+            output = output.multiply(i);
+        }
+        return output;
     }
 
     //Primary methods: addition, multiplication, exponentiation, etc.
@@ -186,10 +204,11 @@ public class BigNum implements Comparable<BigNum>{
     }
 
     /**
-     * Returns a BigNum raised to an input long power The input will not accept
-     * BigNums because that would be extremely large and hopefully not required,
-     * as it depends on a for loop Also will not accept negative numbers because
-     * that is outside the current scope of the implementation of this class
+     * Returns a BigNum raised to an input long power
+     * The input will not accept BigNums because that would be extremely large
+     * and hopefully not required, as it depends on a for loop
+     * Also will not accept negative numbers because that is outside the
+     * current scope of the implementation of this class
      * @param exp The exponent to raise this BigNum to
      * @return A BigNum that is this^exp
      */
@@ -283,6 +302,36 @@ public class BigNum implements Comparable<BigNum>{
         return output;
     }
 
+    /**
+     * Parses trailing zeroes in a scientific notation representation of a
+     * number
+     * @param input The input String to be trimmed
+     * @return A corrected scientific notation number with removed trailing
+     * zeroes
+     */
+    private String parseTrailingZeroes(String input){
+        //counting the number of trailing zeroes
+        int zeroCounter = 0;
+        for(int i = input.indexOf("E") - 1; i >= 0; i--){
+            if(input.charAt(i) != '0'){
+                break;
+            }
+            zeroCounter++;
+        }
+
+        //now let's remove the zeroes, if applicable
+        String output = input;
+        if(zeroCounter > 0){
+            output = output.substring(0, output.indexOf("E") - zeroCounter)
+                    + output.substring(output.indexOf("E"));
+        }
+        if(output.contains(".E")){
+            output = output.substring(0, output.indexOf(".E"))
+                    + output.substring(output.indexOf("E"));
+        }
+        return output;
+    }
+
     //Getter methods
     /**
      * Returns a copy of the digits
@@ -296,6 +345,94 @@ public class BigNum implements Comparable<BigNum>{
         return output;
     }
 
+    /**
+     * Returns the first n digits of this BigNum as a byte[]
+     * @param n The number of digits
+     * @return A byte[] with the first n digits (or up to, if n > digits.length)
+     */
+    public byte[] getFirstDigits(int n){
+        int length = (n > digits.length) ? digits.length : n;
+        byte[] output = new byte[length];
+        for(int i = 0; i < length; i++){
+            output[i] = digits[i];
+        }
+        return output;
+    }
+
+    /**
+     * Returns the last n digits of this BigNum as a byte[]
+     * @param n The number of digits
+     * @return A byte[] with the last n digits (or up to, if n > digits.length)
+     */
+    public byte[] getLastDigits(int n){
+        int length = (n > digits.length) ? digits.length : n;
+        byte[] output = new byte[length];
+        for(int i = 0; i < length; i++){
+            output[output.length - 1 - i] = digits[digits.length - 1 - i];
+        }
+        return output;
+    }
+
+    /**
+     * Returns the length of the BigNum
+     * @return length of the digits[]
+     */
+    public int length(){
+        return digits.length;
+    }
+
+    /**
+     * Returns this BigNum in the form of scientific notation
+     * Default is 15 significant digit precision with trimmed trailing zeroes
+     * @return A String in the form x.yyyEw
+     */
+    public String toScientific(){
+        return toScientific(15, false);
+    }
+
+    /**
+     * Returns this BigNum in the form of scientific notation
+     * Uses n-digit precision but trims trailing zeroes for ease of reading
+     * @param num The level of precision specified
+     * @param trailingZeroes if they want trailing zeroes kept for precision
+     * @return A String in the form x.yyEw
+     */
+    public String toScientific(int num, boolean trailingZeroes){
+        if(num <= 0){
+            throw new IllegalArgumentException("Need 1 or more digits of "
+                    + "precision");
+        }
+
+        String output = "";
+        output += digits[0];
+        if(digits.length > 1 && num > 1){
+            output += ".";
+        }
+        num--; //number of significant digits left
+        for(int i = 1; i < num + 1 && i < digits.length; i++){
+            output += digits[i];
+        }
+        output += "E" + (digits.length - 1);
+        if(!trailingZeroes){
+            output = parseTrailingZeroes(output);
+        }
+
+        return output;
+    }
+
+    /**
+     * An overloaded toScientific method with assumed trailingZeroes false
+     * @param num The precision specified
+     * @return Scientific notation of this number, no trailing zeroes
+     */
+    public String toScientific(int num){
+        return toScientific(num, false);
+    }
+
+    /**
+     * Checks if the current BigNum is 0
+     * @return true if 0, false otherwise
+     */
     public boolean isZero(){
         byte[] temp = {0};
         return Arrays.equals(digits, temp);

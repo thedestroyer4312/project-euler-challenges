@@ -17,7 +17,7 @@ Problem 16 - Trevor Tsai
 Problem 17 - Eric Jin
 Problem 18 -
 Problem 19 -
-Problem 20 -
+Problem 20 - Trevor Tsai
 Problem 21 - Eric Jin
 Problem 22 -
 Problem 23 -
@@ -45,7 +45,7 @@ Problem 44 -
 Problem 45 -
 Problem 46 -
 Problem 47 -
-Problem 48 -
+Problem 48 - Trevor Tsai
 Problem 49 -
 Problem 50 -
 Problem 51 -

@@ -58,7 +58,14 @@ public class NumberLetterCounts{
     public int letterCount(int num){
         if(num < 1){
             throw new IllegalArgumentException("Must be a whole number");
-        }
+	}
+
+	int letters = 0;
+	int places = numDigits(num);
+	//note that there is an "and" between the hundred and tens place
+	if(places >= 3){
+	    letters += "and".length();
+	}
     }
 
     /**

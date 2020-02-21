@@ -5,13 +5,13 @@
  * Find the number of letters in writing out 1 to 1000 (inclusive)
  * @author Trevor Tsai
  */
-import java.util.HashMap;
+import java.util.*;
 
 public class NumberLetterCounts{
 
     //hashmap instance variable
-    private HashMap<Integer, String> numbers;
-    private HashMap<Integer, String> places;
+    private Map<Integer, String> numbers;
+    private Map<Integer, String> places;
 
     //Constructor
     /**
@@ -21,12 +21,10 @@ public class NumberLetterCounts{
         numbers = new HashMap<Integer, String>();
         places = new HashMap<Integer, String>();
         //filling numbers from 1 to 19
-        String[] numStrings = {"one", "two", "three", "four", "five", "six",
-            "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen",
-            "fourteen", "fifteen", "sixteen", "seventeen", "eighteen",
-            "nineteen"};
-        for(int i = 1; i <= numStrings.length; i++){
-            numbers.put(i, numStrings[i - 1]);
+        String[] numStrings = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven",
+            "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+        for(int i = 0; i < numStrings.length; i++){
+            numbers.put(i, numStrings[i]);
         }
         //now, we fill the places
         places.put(20, "twenty");
@@ -52,20 +50,38 @@ public class NumberLetterCounts{
 
     /**
      * Returns the number of letters in num
-     * @param num A whole number (greater than 1)
-     * @return The number of letters in writing out num
+     * @param input A whole number (greater than 1)
+     * @return The number of letters in writing out num (British spelling)
      */
-    public int letterCount(int num){
-        if(num < 1){
+    public int letterCount(int input){
+        if(input < 0){
             throw new IllegalArgumentException("Must be a whole number");
+        }
+
+        String num = String.valueOf(input);
+        if(input < 20){
+            return numbers.get(input).length();
+        }else if(input == 1000){
+            return places.get(input).length();
+        }else{ //20 - 999
+            if(num.length() == 3){
+                int count = numbers.get(Integer.valueOf(num.charAt(0) + "")).length() + places.get(100).length();
+                return count + 3 + letterCount(Integer.valueOf(num.substring(1)));
+                //the 3 is for "and"
+            }else{//length 2
+                int tens = Integer.valueOf(num.charAt(0) + "");
+                int ones = Integer.valueOf(num.charAt(1) + "");
+                return places.get(tens * 10).length() + numbers.get(ones).length();
+            }
         }
     }
 
+    /*
     /**
      * Returns the number of digits in n
      * @param n An int
      * @return The number of digits in n
-     */
+     *
     public static int numDigits(int n){
         int counter = 0;
         while(n > 0){
@@ -74,4 +90,5 @@ public class NumberLetterCounts{
         }
         return counter;
     }
+     */
 }

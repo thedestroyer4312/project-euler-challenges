@@ -269,6 +269,8 @@ public class BigNum implements Comparable<BigNum>{
         if(allZeroes){
             byte[] temp = {0};
             return temp;
+        }else if(counter == 0){ //no zeroes at all?
+            return input;
         }else{
             //if it's not, carry on as normal
             output = new byte[input.length - counter];
@@ -466,7 +468,6 @@ public class BigNum implements Comparable<BigNum>{
         }else{
             e = (BigNum) obj;
         }
-
         return Arrays.equals(this.digits, e.digits);
     }
 
@@ -478,35 +479,25 @@ public class BigNum implements Comparable<BigNum>{
     @Override
     public int compareTo(BigNum obj){
         int output;
-        //first, a length comparison
-        if(this.digits.length > obj.digits.length){
-            output = 1;
-        }else if(obj.digits.length > this.digits.length){
-            output = -1;
+        if(this.equals(obj)){
+            output = 0;
         }else{
-            //what if they're the same length? we check the first digit
-            if(this.digits[0] > obj.digits[0]){
+            //first, a length comparison
+            if(this.digits.length > obj.digits.length){
                 output = 1;
-            }else if(obj.digits[0] > this.digits[0]){
+            }else if(obj.digits.length > this.digits.length){
                 output = -1;
             }else{
-                /* what if the first digits are equal? first, check for overall
-                 * equality in the numbers
-                 */
-                if(this.equals(obj)){
-                    output = 0;
-                }else{
-                    //if they're not equal, we go down the line
-                    output = 0;
-                    for(int i = digits.length - 1; i >= 0; i--){
-                        if(this.digits[i] > obj.digits[i]){
-                            output = 1;
-                            break;
-                        }
-                        if(obj.digits[i] > this.digits[i]){
-                            output = -1;
-                            break;
-                        }
+                //what if they're the same length? we check the digits
+                output = 0;
+                for(int i = 0; i < digits.length; i--){
+                    if(this.digits[i] > obj.digits[i]){
+                        output = 1;
+                        break;
+                    }
+                    if(obj.digits[i] > this.digits[i]){
+                        output = -1;
+                        break;
                     }
                 }
             }

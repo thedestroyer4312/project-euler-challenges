@@ -6,46 +6,16 @@ package problems.problem17;
  * Find the number of letters in writing out 1 to 1000 (inclusive)
  * @author Trevor Tsai
  */
-import java.util.*;
+import java.util.Map;
 
 public class NumberLetterCounts{
 
-	// hashmap instance variable
-	private Map<Integer, String> numbers;
-	private Map<Integer, String> places;
-
-	// Constructor
-	/**
-	 * Initializes the values of the HashMap instance variables
-	 */
-	public NumberLetterCounts(){
-		numbers = new HashMap<Integer, String>();
-		places = new HashMap<Integer, String>();
-		// filling numbers from 1 to 19
-		String[] numStrings = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-				"eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
-		for(int i = 0; i < numStrings.length; i++){
-			numbers.put(i, numStrings[i]);
-		}
-		// now, we fill the places
-		places.put(20, "twenty");
-		places.put(30, "thirty");
-		places.put(40, "forty");
-		places.put(50, "fifty");
-		places.put(60, "sixty");
-		places.put(70, "seventy");
-		places.put(80, "eighty");
-		places.put(90, "ninety");
-		places.put(100, "hundred");
-		places.put(1000, "thousand");
-	}
+	private static Map<Integer, String> numbers;
 
 	public static void main(String[] args){
-		NumberLetterCounts obj = new NumberLetterCounts();
-		int numLetters = 0;
-		for(int i = 1; i <= 1000; i++){
-			numLetters += obj.letterCount(i);
-		}
+		Dictionary.main(null);
+		numbers = Dictionary.numbers;
+		int numLetters = letterCountRange(1, 1000);
 		System.out.println(numLetters);
 	}
 
@@ -54,42 +24,39 @@ public class NumberLetterCounts{
 	 * @param input A whole number (greater than 1)
 	 * @return The number of letters in writing out num (British spelling)
 	 */
-	public int letterCount(int input){
+	public static int letterCount(int input){
 		if(input < 0){
 			throw new IllegalArgumentException("Must be a whole number");
 		}
 
-		String num = String.valueOf(input);
-		if(input < 20){
+		if(input <= 20){
 			return numbers.get(input).length();
 		}else if(input == 1000){
-			return places.get(input).length();
-		}else{ // 20 - 999
-			if(num.length() == 3){
-				int count = numbers.get(Integer.valueOf(num.charAt(0) + "")).length() + places.get(100).length();
-				return count + 3 + letterCount(Integer.valueOf(num.substring(1)));
-				// the 3 is for "and"
-			}else{// length 2
-				int tens = Integer.valueOf(num.charAt(0) + "");
-				int ones = Integer.valueOf(num.charAt(1) + "");
-				return places.get(tens * 10).length() + numbers.get(ones).length();
+			return numbers.get(1).length() + numbers.get(1000).length();
+		}else{ // 21 - 999
+				// 100-999
+			if(input >= 100 && input <= 999){
+				int count = numbers.get(input / 100).length() + numbers.get(100).length();
+				return count + ((input % 100 == 0) ? 0 : "and".length() + letterCount(input % 100));
+			}else{// 21-99
+				int tens = input / 10;
+				int ones = input % 10;
+				return numbers.get(tens * 10).length() + numbers.get(ones).length();
 			}
 		}
 	}
 
-	/* /**
-	 * Returns the number of digits in n
-	 * 
-	 * @param n An int
-	 * 
-	 * @return The number of digits in n
-	 *
-	 * public static int numDigits(int n){
-	 * int counter = 0;
-	 * while(n > 0){
-	 * n /= 10;
-	 * counter++;
-	 * }
-	 * return counter;
-	 * } */
+	/**
+	 * Counts the number of letters of all natural numbers between start and end, inclusive
+	 * @param start The starting integer (must be 0 or greater)
+	 * @param end The ending integer (should be no more than 1000)
+	 * @return the number of letters of all natural numbers in this range
+	 */
+	public static int letterCountRange(int start, int end){
+		int count = 0;
+		for(int i = start; i <= end; i++){
+			count += letterCount(i);
+		}
+		return count;
+	}
 }

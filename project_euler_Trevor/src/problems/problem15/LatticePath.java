@@ -1,7 +1,7 @@
 package problems.problem15;
 
 /**
- * ***WORK IN PROGRESS***
+ * ***SOLVED***
  * Euler Problem #15
  * Given a 20 x 20 grid, how many ways can you get to the bottom right
  * if you start at the top left corner?
@@ -13,17 +13,17 @@ public class LatticePath{
 
 	public static void main(String[] args){
 		LatticePath obj = new LatticePath();
-		int combinations = obj.latticePaths(20, 20);
+		long combinations = obj.latticePaths(20, 20);
 		System.out.println(combinations);
 	}
 
 	// instance variable
-	// this hashmap will store already-run combinations to reduce runtime
-	private HashMap<int[], Integer> paths;
+	// this hashmap will store already-run combinations to reduce runtime (memoization)
+	private Map<Set<Integer>, Long> paths;
 
 	// constructor
 	public LatticePath(){
-		paths = new HashMap<int[], Integer>();
+		paths = new HashMap<Set<Integer>, Long>();
 	}
 
 	// instance methods
@@ -34,7 +34,7 @@ public class LatticePath{
 	 * @param n2 The width of the grid
 	 * @return the number of combinations to get to the bottom right
 	 */
-	public int latticePaths(int n1, int n2){
+	public long latticePaths(int n1, int n2){
 		if(n1 == 0 && n2 == 0){
 			return 1;
 		}
@@ -42,7 +42,9 @@ public class LatticePath{
 			return 0;
 		}
 		// let's check if it's already in the hashmap
-		int[] temp = {n1, n2};
+		Set<Integer> temp = new HashSet<Integer>();
+		temp.add(n1);
+		temp.add(n2);
 		if(paths.containsKey(temp)){
 			return paths.get(temp);
 		}else{

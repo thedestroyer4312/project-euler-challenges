@@ -1,7 +1,7 @@
 package problems.problem17;
 
 /**
- * ***WORK IN PROGRESS***
+ * ***Solved***
  * Euler Problem #17
  * Find the number of letters in writing out 1 to 1000 (inclusive)
  * @author Trevor Tsai

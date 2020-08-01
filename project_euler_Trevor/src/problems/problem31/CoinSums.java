@@ -10,17 +10,37 @@ import java.util.HashSet;
 
 public class CoinSums{
 
-	private static class ArrayWrapper{
+	public static class ArrayWrapper{
 
 		private int[] arr;
 
-		private ArrayWrapper(int[] input){
-			arr = input;
+		public ArrayWrapper(int[] input){
+			arr = input.clone();
+		}
+
+		public ArrayWrapper(ArrayWrapper other){
+			arr = other.arr.clone();
 		}
 
 		@Override
 		public boolean equals(Object o){
-			return o instanceof ArrayWrapper && Arrays.equals(arr, ((ArrayWrapper) o).arr);
+			return o != null && o instanceof ArrayWrapper && Arrays.equals(arr, ((ArrayWrapper) o).arr);
+		}
+
+		@Override
+		public int hashCode(){
+			return toString().hashCode();
+		}
+
+		@Override
+		public String toString(){
+			String temp = "[";
+			for(int i : arr){
+				temp += i + " ";
+			}
+			temp = temp.trim();
+			temp += "]";
+			return temp;
 		}
 	}
 
@@ -38,7 +58,10 @@ public class CoinSums{
 	 * in Hashmap for memoization optimization
 	 */
 	public static long makeChange(int pence){
-		return makeChange(pence, new HashSet<ArrayWrapper>(), new int[8], new HashMap<Integer, Long>());
+		Set<ArrayWrapper> combinations = new HashSet<ArrayWrapper>();
+		long output = makeChange(pence, combinations, new int[8], new HashMap<Integer, Long>());
+		System.out.println(combinations);
+		return output;
 	}
 
 	/**
@@ -53,18 +76,22 @@ public class CoinSums{
 		}else if(pence < 0){
 			return 0;
 		}else{
-			if(log.containsKey(pence)){
-				return log.get(pence);
-			}else{
-				long count = 0;
-				for(int i = 0; i < COINS.length; i++){
-					int[] newCounts = counts.clone();
-					newCounts[i]++;
-					log.put(pence - COINS[i], makeChange(pence - COINS[i], combinations, newCounts.clone(), log));
-					count += makeChange(pence - COINS[i], combinations, newCounts.clone(), log);
+			// if(log.containsKey(pence)){
+			// return log.get(pence);
+			// }else{
+			long count = 0;
+			for(int i = 0; i < COINS.length; i++){
+				int[] newCounts = counts.clone();
+				newCounts[i]++;
+				// log.put(pence - COINS[i], makeChange(pence - COINS[i], combinations, newCounts.clone(), log));
+				long temp = makeChange(pence - COINS[i], combinations, newCounts.clone(), log);
+				if(temp == 0){
+					break;
 				}
-				return count;
+				count += temp;
 			}
+			return count;
+			// }
 		}
 	}
 }
